@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payment - Heavenly Brew</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="glass"> <h2 style="color: #6f4e37;">PAYMENT</h2>
+        
+        <div class="type-select">
+            <button class="type-btn" id="btnCash" onclick="selectPayment('Cash')">CASH</button>
+            <button class="type-btn" id="btnGcash" onclick="selectPayment('GCash')">GCASH</button>
+        </div>
+
+        <div id="qrArea" style="display:none; margin: 20px 0;">
+            <p style="font-size: 0.9em; color: #888;">Scan to Pay via GCash</p>
+            <img src="images/QRCODECASHG.jpg" style="width:180px; border-radius: 15px; border: 5px solid #fff;">
+        </div>
+
+        <p id="msg" style="font-weight: bold; color: #28a745;"></p>
+        
+        <button class="nav-btn" onclick="finishPayment()" style="background:#28a745; color:white;">CONFIRM & FINISH</button>
+    </div>
+    
+    <script>
+        let method = "";
+        function selectPayment(m) {
+            method = m;
+            document.getElementById('btnCash').className = m === 'Cash' ? 'type-btn active' : 'type-btn';
+            document.getElementById('btnGcash').className = m === 'GCash' ? 'type-btn active' : 'type-btn';
+            
+            const qr = document.getElementById('qrArea');
+            qr.style.display = (m === 'GCash') ? 'block' : 'none';
+            document.getElementById('msg').innerText = m + " Selected";
+        }
+
+        function finishPayment() {
+            if(!method) return alert("Please select a payment method!");
+            window.location.href = "wifi.html";
+        }
+    </script>
+</body>
+</html>

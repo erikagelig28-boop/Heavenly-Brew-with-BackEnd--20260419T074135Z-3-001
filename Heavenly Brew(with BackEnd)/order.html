@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Your Order</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        #orderList { text-align: left; margin: 20px 0; }
+        .order-row { display: flex; justify-content: space-between; padding: 10px; background: white; border-radius: 8px; margin-bottom: 5px; }
+    </style>
+</head>
+<body>
+    <div class="glass">
+        <h2>YOUR ORDER</h2>
+        <div id="orderList"></div>
+        <h3>TOTAL: ₱<span id="totalPrice">0</span></h3>
+        <button class="nav-btn" onclick="sendOrder()" style="background:#28a745; color:white;">PLACE ORDER</button>
+        <button class="nav-btn" onclick="window.location.href='menu.html'" style="background:#888; color:white;">ADD MORE</button>
+    </div>
+    <script src="script.js"></script>
+    <script>
+        window.onload = renderOrder;
+        function renderOrder() {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            let list = document.getElementById("orderList");
+            let total = 0;
+            list.innerHTML = cart.length ? "" : "<p>Cart is empty</p>";
+            cart.forEach(item => {
+                total += item.Price * item.Qty;
+                list.innerHTML += `<div class="order-row"><span>${item.Name} x${item.Qty}</span><span>₱${item.Price * item.Qty}</span></div>`;
+            });
+            document.getElementById("totalPrice").innerText = total;
+        }
+    </script>
+</body>
+</html>

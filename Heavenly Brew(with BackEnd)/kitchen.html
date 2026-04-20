@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Kitchen Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Ensuring the dashboard looks clean */
+        .order-card { 
+            background: white; 
+            padding: 20px; 
+            margin: 15px 0; 
+            border-radius: 15px; 
+            border-left: 10px solid #6f4e37; 
+            text-align: left;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .order-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        .item-list { margin: 15px 0; padding-left: 20px; }
+        .item-list li { margin-bottom: 5px; font-weight: 500; }
+        .done-btn { background: #28a745; color: white; border: none; padding: 12px 20px; cursor: pointer; border-radius: 8px; font-weight: bold; width: 100%; }
+        .done-btn:hover { background: #218838; }
+    </style>
+</head>
+<body>
+    <div class="glass">
+        <h2 style="color: #6f4e37;">KITCHEN ORDERS</h2>
+        <div id="kitchenList">
+            <p style="color: #888;">Waiting for orders...</p>
+        </div>
+    </div>
+
+    <script>
+        async function fetchOrders() {
+            try {
+                // Fetching from your specific
+                const response = await fetch("http://localhost:5267/orders");
+                const orders = await response.json();
+                
+                // Debugging: This helps you see the naming convention in the F12 Console
+                console.log("Orders received:", orders);
+                
+                renderKitchen(orders);
+            } catch (e) { 
+                console.error("Kitchen Fetch Error:", e); 
+            }
+        }
+
+        function renderKitchen(orders) {
+            const container = document.getElementById("kitchenList");
+            if (!orders || orders.length === 0) {
+                container.innerHTML = "<p style='color: #888;'>No active orders.</p>";
+                return;
+            }
+
+            container.innerHTML = ""; 
+
+            orders.forEach(order => {
+                // FIX: Support both camelCase (customerName) and PascalCase (CustomerName)
+                const cName = order.customerName || order.CustomerName || "Unknown";
+                const tNum = order.tableNumber || order.TableNumber || "N/A";
+                const orderId = order.id || order.Id;
+                const itemsList = order.items || order.Items || [];
+
+                let itemsHtml = itemsList.map(i => {
+                    const itemName = i.name || i.Name;
+                    const itemQty = i.qty || i.Qty;
+                    return `<li>${itemName} <span style="color:#6f4e37;">x${itemQty}</span></li>`;
+                }).join("");
+
+                container.innerHTML += `
+                    <div class="order-card">
+                        <div class="order-header">
+                            <h3>${tNum}</h3>
+                            <span style="font-weight:bold; color:#555;">${cName}</span>
+                        </div>
+                        <ul class="item-list">${itemsHtml}</ul>
+                        <button class="done-btn" onclick="completeOrder(${orderId})">MARK AS SERVED</button>
+                    </div>`;
+            });
+        }
+
+        async function completeOrder(id) {
+            if(!confirm("Are you sure this order is finished?")) return;
+            
+            try {
+                await fetch(`http://localhost:5267/orders/${id}`, { method: "DELETE" });
+                fetchOrders(); 
+            } catch (e) {
+                alert("Could not delete order. Server might be down.");
+            }
+        }
+
+        // Auto-refresh every 3 seconds for a faster kitchen response
+        setInterval(fetchOrders, 3000);
+        window.onload = fetchOrders;
+    </script>
+</body>
+</html>

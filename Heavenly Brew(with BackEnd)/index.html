@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login - Heavenly Brew</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="glass">
+        <h1 style="color: #6f4e37;">HEAVENLY BREW</h1>
+        <p style="font-size: 0.9em; color: #888;">Welcome! Please enter your name.</p>
+        
+        <input type="text" id="name" placeholder="Full Name">
+        
+        <input type="text" id="tableNum" placeholder="Assigning Table..." readonly 
+               style="background: #f0f0f0; cursor: not-allowed; color: #555;">
+
+        <div class="type-select">
+            <button class="type-btn" id="btnDine" onclick="setType('Dine In')">DINE IN</button>
+            <button class="type-btn" id="btnTake" onclick="setType('Take Out')">TAKE OUT</button>
+        </div>
+
+        <button class="nav-btn" onclick="goMenu()" style="background:#28a745; color:white;">START ORDERING</button>
+    </div>
+
+    <script>
+        let selectedType = "";
+
+        // 1. AUTOMATIC TABLE ASSIGNMENT (1-10)
+        window.onload = function() {
+            // Generates a random number between 1 and 10
+            let autoTable = Math.floor(Math.random() * 10) + 1;
+            document.getElementById("tableNum").value = "Table " + autoTable;
+        };
+
+        function setType(t) {
+            selectedType = t;
+            document.getElementById('btnDine').className = t === 'Dine In' ? 'type-btn active' : 'type-btn';
+            document.getElementById('btnTake').className = t === 'Take Out' ? 'type-btn active' : 'type-btn';
+            
+            // 2. LOGIC FOR TAKE OUT
+            if(t === 'Take Out') {
+                document.getElementById("tableNum").value = "N/A (Take Out)";
+            } else {
+                // Re-assign a table if they switch back to Dine In
+                let autoTable = Math.floor(Math.random() * 10) + 1;
+                document.getElementById("tableNum").value = "Table " + autoTable;
+            }
+            
+            localStorage.setItem("orderType", t);
+        }
+
+        function goMenu() {
+            let n = document.getElementById("name").value;
+            let t = document.getElementById("tableNum").value;
+
+            if(!n || !selectedType) {
+                return alert("Please enter your name and select Dine-In or Take-Out!");
+            }
+
+            localStorage.setItem("name", n);
+            localStorage.setItem("tableNum", t);
+            window.location.href = "menu.html";
+        }
+    </script>
+</body>
+</html>

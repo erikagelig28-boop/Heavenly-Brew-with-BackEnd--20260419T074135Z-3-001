@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Menu</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="glass">
+    <h2 id="stepText" style="color:#6f4e37;">STEP 1: ICE COFFEE</h2>
+
+    <div id="ice" class="category">
+        <div class="menu">
+            <div class="item"><img src="images/1st.png"><p>ICE CARAMEL<br>₱50</p>
+                <div class="qty"><button onclick="changeQty('ICE CARAMEL',50,-1)">-</button><span id="q_ICE CARAMEL">0</span><button onclick="changeQty('ICE CARAMEL',50,1)">+</button></div>
+            </div>
+            <div class="item"><img src="images/2nd.png"><p>MATCHA LATTE<br>₱60</p>
+                <div class="qty"><button onclick="changeQty('MATCHA LATTE',60,-1)">-</button><span id="q_MATCHA LATTE">0</span><button onclick="changeQty('MATCHA LATTE',60,1)">+</button></div>
+            </div>
+            <div class="item"><img src="images/3rd.png"><p>DARK ICE COFFEE<br>₱60</p>
+                <div class="qty"><button onclick="changeQty('DARK ICE COFFEE',60,-1)">-</button><span id="q_DARK ICE COFFEE">0</span><button onclick="changeQty('DARK ICE COFFEE',60,1)">+</button></div>
+            </div>
+        </div>
+        <button class="nav-btn" onclick="showCategory('hot')">NEXT: HOT COFFEE ➜</button>
+    </div>
+
+    <div id="hot" class="category" style="display:none">
+        <div class="menu">
+            <div class="item"><img src="images/1st(2nd).png"><p>ESPRESSO<br>₱40</p>
+                <div class="qty"><button onclick="changeQty('ESPRESSO',40,-1)">-</button><span id="q_ESPRESSO">0</span><button onclick="changeQty('ESPRESSO',40,1)">+</button></div>
+            </div>
+            <div class="item"><img src="images/2nd(2nd).png"><p>AMERICANO<br>₱40</p>
+                <div class="qty"><button onclick="changeQty('AMERICANO',40,-1)">-</button><span id="q_AMERICANO">0</span><button onclick="changeQty('AMERICANO',40,1)">+</button></div>
+            </div>
+            <div class="item"><img src="images/3rd(2nd).png"><p>DARK SIDE BREW<br>₱40</p>
+                <div class="qty"><button onclick="changeQty('DARK SIDE BREW',40,-1)">-</button><span id="q_DARK SIDE BREW">0</span><button onclick="changeQty('DARK SIDE BREW',40,1)">+</button></div>
+            </div>
+        </div>
+        <button class="nav-btn" onclick="showCategory('ice')" style="background:#888; color:white; margin-bottom:10px;">⬅ BACK</button>
+        <button class="nav-btn" onclick="showCategory('food')">NEXT: FOOD ➜</button>
+    </div>
+
+    <div id="food" class="category" style="display:none">
+        <div class="menu">
+            <div class="item"><img src="images/1st(3rd).png"><p>COFFE CAKE<br>₱80</p>
+                <div class="qty"><button onclick="changeQty('COFFE CAKE',80,-1)">-</button><span id="q_COFFE CAKE">0</span><button onclick="changeQty('COFFE CAKE',80,1)">+</button></div>
+            </div>
+            <div class="item"><img src="images/2nd(3rd).png"><p>MIDNIGHT TRUFFLE CAKE<br>₱80</p>
+                <div class="qty"><button onclick="changeQty('MIDNIGHT TRUFFLE CAKE',80,-1)">-</button><span id="q_MIDNIGHT TRUFFLE CAKE">0</span><button onclick="changeQty('MIDNIGHT TRUFFLE CAKE',80,1)">+</button></div>
+            </div>
+            <div class="item"><img src="images/3rd(3rd).png"><p>MOCHA MILLE CRUNCH<br>₱80</p>
+                <div class="qty"><button onclick="changeQty('MOCHA MILLE CRUNCH',80,-1)">-</button><span id="q_MOCHA MILLE CRUNCH">0</span><button onclick="changeQty('MOCHA MILLE CRUNCH',80,1)">+</button></div>
+            </div>
+        </div>
+        <button class="nav-btn" onclick="showCategory('hot')" style="background:#888; color:white; margin-bottom:10px;">⬅ BACK</button>
+        <button class="nav-btn" onclick="window.location.href='order.html'" style="background:#28a745; color:white;">VIEW ORDER</button>
+    </div>
+</div>
+<script src="script.js"></script>
+<script>
+    function showCategory(id) {
+        document.querySelectorAll('.category').forEach(c => c.style.display = 'none');
+        document.getElementById(id).style.display = 'block';
+        const titles = {'ice':'STEP 1: ICE COFFEE','hot':'STEP 2: HOT COFFEE','food':'STEP 3: FOOD'};
+        document.getElementById('stepText').innerText = titles[id];
+    }
+</script>
+</body>
+</html>
